@@ -1,0 +1,61 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+import Button from "~/components/common/Button.astro";
+import { cn } from "~/lib/utils";
+type Props = HTMLAttributes<"dialog"> & {
+  icon?: astroHTML.JSX.Element;
+  title?: string;
+  description?: string;
+  buttonProps?: HTMLAttributes<"button">;
+};
+
+const { title, description, icon, class: className, buttonProps, ...rest } = Astro.props;
+---
+
+<Button id="trigger" class={cn(buttonProps?.class)}>Open Modal</Button>
+
+<dialog
+  id="dialog"
+  class={cn("relative rounded-lg bg-white p-4 sm:shadow-xl sm:w-full sm:max-w-sm sm:p-6 text-center", className)}
+  aria-modal="true"
+  aria-labelledby="dialog-label"
+  aria-describedby="dialog-description"
+  {...rest}
+>
+  <button id="close" class="absolute right-4 top-4 -m-1 p-1">
+    <Icon name="tabler:x" class="h-6 w-6" />
+    <span class="sr-only">Close</span>
+  </button>
+
+  <div class="flex flex-col items-center gap-3">
+    <slot name="icon" />
+    {
+      title && (
+        <h2 id="dialog-label" class="text-lg font-bold text-primary">
+          {title}
+        </h2>
+      )
+    }
+    {description && <p id="dialog-description">{description}</p>}
+  </div>
+  <slot />
+</dialog>
+
+<script>
+  import { isClickOutside } from "~/lib/utils";
+
+  const trigger = document.getElementById("trigger") as HTMLButtonElement;
+  const dialog = document.getElementById("dialog") as HTMLDialogElement;
+  const close = document.getElementById("close") as HTMLButtonElement;
+
+  trigger.addEventListener("click", () => dialog.showModal());
+  close.addEventListener("click", () => dialog.close());
+
+  // Close on click outside
+  dialog.addEventListener("click", (e) => {
+    if (isClickOutside(dialog, e)) {
+      dialog.close();
+    }
+  });
+</script>

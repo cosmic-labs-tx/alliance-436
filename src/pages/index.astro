@@ -1,0 +1,20 @@
+---
+import { Icon } from "astro-icon/components";
+import ButtonGroup from "~/components/common/ButtonGroup.astro";
+import Dialog from "~/components/common/Dialog.astro";
+import Layout from "~/layouts/Layout.astro";
+---
+
+<Layout meta={{ title: "Home", description: "A starter template for Friendly Bear Labs Clients" }}>
+  <main class="grid min-h-[800px] place-items-center">
+    <h1>Welcome to the Friendly Bear Labs Starter</h1>
+    <ButtonGroup>
+      <Dialog
+        title="Payment successful"
+        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+      >
+        <Icon name="tabler:circle-check-filled" class="h-12 w-12 text-green-700" slot="icon" />
+      </Dialog>
+    </ButtonGroup>
+  </main>
+</Layout>
